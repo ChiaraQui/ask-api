@@ -16,8 +16,9 @@ load_dotenv(_ENV_PATH)
 app = FastAPI()
 client = OpenAI()  # Reads OPENAI_API_KEY from the environment; never hardcode keys.
 
-# Stage 4 default — strong general model; swap at request time for the live demo.
-DEFAULT_MODEL = "gpt-4o"
+# Stage 4 default — gpt-4o-mini keeps a public endpoint cheap (~17x less than
+# gpt-4o per call); pass "model" per request to compare costs in the demo.
+DEFAULT_MODEL = "gpt-4o-mini"
 
 # Stage 5 — per-1K-token input/output USD (derived from OpenAI list prices).
 MODEL_PRICES_PER_1K: dict[str, tuple[float, float]] = {
