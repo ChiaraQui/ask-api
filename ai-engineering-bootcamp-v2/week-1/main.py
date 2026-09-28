@@ -1,10 +1,12 @@
 """Week 1 live demo — five stages in one file, built up live in class."""
 
+import os
 import time
 from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 from pydantic import BaseModel, Field, ValidationError
 
@@ -15,6 +17,24 @@ load_dotenv(_ENV_PATH)
 # Reuse one client so TLS handshakes are not repeated on every request.
 app = FastAPI()
 client = OpenAI()  # Reads OPENAI_API_KEY from the environment; never hardcode keys.
+
+# Browsers refuse cross-origin calls unless the API opts in, so a React frontend
+# needs this. Add the deployed frontend's URL to ALLOWED_ORIGINS in Render
+# (comma-separated) - keeping it to a known list rather than "*" means a random
+# page cannot spend our credit from a visitor's browser.
+_DEFAULT_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", _DEFAULT_ORIGINS).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 
 # Stage 4 default — gpt-4o-mini keeps a public endpoint cheap (~17x less than
 # gpt-4o per call); pass "model" per request to compare costs in the demo.
