@@ -116,6 +116,19 @@ def call_model_unsafe(question: str, model: str) -> tuple[Answer, int, int, int]
     return answer, total, prompt_tokens, completion_tokens
 
 
+@app.get("/")
+def root():
+    """Landing route so the base URL is useful instead of a bare 404."""
+
+    return {
+        "service": "ask-api",
+        "status": "ok",
+        "docs": "/docs",
+        "endpoint": "POST /ask",
+        "example": {"question": "What is RAG in one sentence?"},
+    }
+
+
 @app.post("/ask")
 def ask(body: AskRequest) -> AskResponse:
     """Answer one question with structured output, guardrails, and cost visibility."""
