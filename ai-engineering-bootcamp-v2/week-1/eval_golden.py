@@ -3,7 +3,7 @@ Golden-set eval for the RAG service: known-answer questions plus refusal cases.
 
 Usage (server must be running; OPENAI_API_KEY in .env for the faithfulness judge):
     python eval_golden.py                                   # local
-    python eval_golden.py https://ask-api-olmp.onrender.com # deployed
+    python eval_golden.py https://your-service.onrender.com  # deployed
 
 Writes a markdown table to eval_results.md and prints it.
 

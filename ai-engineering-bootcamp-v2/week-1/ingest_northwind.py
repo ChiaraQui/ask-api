@@ -3,7 +3,7 @@ Ingest the Northwind sample docs through POST /ingest.
 
 Usage (server must be running):
     python ingest_northwind.py                                   # local
-    python ingest_northwind.py https://ask-api-olmp.onrender.com # deployed
+    python ingest_northwind.py https://your-service.onrender.com  # deployed
 
 Goes through the API rather than calling rag.py directly, so it exercises the
 same path a real client uses. Safe to re-run: each document_id replaces its
